@@ -29,9 +29,9 @@ import { searchType } from './actions';
 
 export function Library({
   search,
-  loading,
-  error,
-  props,
+  // loading,
+  // error,
+  // props,
   onLoadProps,
   onSearchType,
 }) {
@@ -42,11 +42,11 @@ export function Library({
     onLoadProps();
   }, []);
 
-  const propsListProps = {
-    loading,
-    error,
-    props,
-  };
+  // const propsListProps = {
+  //   loading,
+  //   error,
+  //   props,
+  // };
 
   return (
     <div>
@@ -70,10 +70,10 @@ export function Library({
 }
 
 Library.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  // loading: PropTypes.bool,
+  // error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   search: PropTypes.string,
-  props: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  // props: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   onLoadProps: PropTypes.func,
   onSearchType: PropTypes.func,
 };

@@ -14,7 +14,6 @@ export function* getProps() {
   try {
     // Call request helper (see 'utils/request')
     const props = yield call(request, requestURL);
-    console.log(props);
     yield put(propsLoaded(props.data));
   } catch (err) {
     yield put(propsLoadingError(err));
