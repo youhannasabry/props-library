@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardHeader, Paper } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
 import PropTypes from 'prop-types';
@@ -14,15 +14,39 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import {
+  makeSelectProps,
+  makeSelectLoading,
+  makeSelectError,
+} from 'containers/App/selectors';
+import { loadProps } from '../App/actions';
+
 import { makeSelectSearch } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import './index.css';
 import { searchType } from './actions';
 
-export function Library({ search, onSearchType }) {
+export function Library({
+  search,
+  loading,
+  error,
+  props,
+  onLoadProps,
+  onSearchType,
+}) {
   useInjectReducer({ key: 'library', reducer });
   useInjectSaga({ key: 'library', saga });
+
+  useEffect(() => {
+    onLoadProps();
+  }, []);
+
+  const propsListProps = {
+    loading,
+    error,
+    props,
+  };
 
   return (
     <div>
@@ -35,7 +59,7 @@ export function Library({ search, onSearchType }) {
               <SearchBar
                 value={search}
                 onChange={onSearchType}
-                // onRequestSearch={() => console.log(this.state.value)}
+                onRequestSearch={onSearchType}
               />
             }
           />
@@ -46,17 +70,28 @@ export function Library({ search, onSearchType }) {
 }
 
 Library.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   search: PropTypes.string,
+  props: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  onLoadProps: PropTypes.func,
   onSearchType: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
+  props: makeSelectProps(),
   search: makeSelectSearch(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onSearchType: value => dispatch(searchType(value)),
+    onLoadProps: evt => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(loadProps());
+    },
     dispatch,
   };
 }
