@@ -1,15 +1,38 @@
 body {
     background-color: #fcf9f9;
-  }
-  .paper {
+}
+
+.paper {
     width: 50%;
     margin: auto;
-  }
-  .card {
+}
+
+.card {
     min-height: 500px;
     margin-top: 10%;
-  }
-  .header{
+}
+
+.header {
     background-color: #183650;
     color: white;
-  }
+}
+
+.menu-paper {
+    min-height: 500px;
+}
+
+.menu {
+    background-color: #0e2a42;
+    min-height: 500px;
+}
+
+.menu-item {
+    color: white;
+}
+
+.scroll-box {
+    max-height: 500px;
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: #081929;
+}
