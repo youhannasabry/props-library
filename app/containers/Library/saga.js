@@ -8,8 +8,11 @@ import request from 'utils/request';
 /**
  * Props request/response handler
  */
-export function* getProps() {
-  const requestURL = `https://us-central1-props-library.cloudfunctions.net/load-props`;
+export function* getProps(data) {
+  const requestURL = data.category
+    ? // eslint-disable-next-line prettier/prettier
+    `https://us-central1-props-library.cloudfunctions.net/filter-props?category=${data.category}`
+    : 'https://us-central1-props-library.cloudfunctions.net/load-props';
 
   try {
     // Call request helper (see 'utils/request')

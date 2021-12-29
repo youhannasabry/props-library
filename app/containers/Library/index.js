@@ -33,6 +33,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import {
   makeSelectProps,
+  makeSelectCategories,
   makeSelectLoading,
   makeSelectError,
 } from 'containers/App/selectors';
@@ -44,23 +45,19 @@ import saga from './saga';
 import './index.css';
 import { searchType } from './actions';
 
-export function Library({ search, props, onLoadProps, onSearchType }) {
+export function Library({
+  search,
+  props,
+  categories,
+  onLoadProps,
+  onSearchType,
+}) {
   useInjectReducer({ key: 'library', reducer });
   useInjectSaga({ key: 'library', saga });
 
   useEffect(() => {
     onLoadProps();
   }, []);
-
-  const categorizedProps =
-    props !== false &&
-    // eslint-disable-next-line func-names, react/prop-types
-    props.reduce(function(prop, acc) {
-      // eslint-disable-next-line no-param-reassign
-      prop[acc.category] = prop[acc.category] || [];
-      prop[acc.category].push(acc);
-      return prop;
-    }, Object.create(null));
 
   return (
     <div>
@@ -81,16 +78,20 @@ export function Library({ search, props, onLoadProps, onSearchType }) {
             <Box gridColumn="span 3">
               <Paper elevation={12} className="menu-paper">
                 <MenuList className="menu">
-                  {Object.keys(categorizedProps).map(category => (
-                    <MenuItem key={category}>
-                      <ListItemText className="menu-item">
-                        {category}
-                      </ListItemText>
-                      <Typography variant="body2" className="menu-item">
-                        <ArrowRight />
-                      </Typography>
-                    </MenuItem>
-                  ))}
+                  {categories &&
+                    categories.map(category => (
+                      <MenuItem
+                        key={category.category}
+                        onClick={() => onLoadProps(category.category)}
+                      >
+                        <ListItemText className="menu-item">
+                          {category.category}
+                        </ListItemText>
+                        <Typography variant="body2" className="menu-item">
+                          <ArrowRight />
+                        </Typography>
+                      </MenuItem>
+                    ))}
                 </MenuList>
               </Paper>
             </Box>
@@ -144,14 +145,16 @@ export function Library({ search, props, onLoadProps, onSearchType }) {
 }
 
 Library.propTypes = {
-  search: PropTypes.string,
+  search: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   props: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  categories: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   onLoadProps: PropTypes.func,
   onSearchType: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   props: makeSelectProps(),
+  categories: makeSelectCategories(),
   search: makeSelectSearch(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
@@ -162,7 +165,7 @@ function mapDispatchToProps(dispatch) {
     onSearchType: value => dispatch(searchType(value)),
     onLoadProps: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadProps());
+      dispatch(loadProps(evt));
     },
     dispatch,
   };

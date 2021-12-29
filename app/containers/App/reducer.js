@@ -15,6 +15,7 @@ export const initialState = {
   loading: false,
   error: false,
   props: false,
+  categories: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -25,10 +26,12 @@ const appReducer = (state = initialState, action) =>
         draft.loading = true;
         draft.error = false;
         draft.props = false;
+        draft.categories = false;
         break;
 
       case LOAD_PROPS_SUCCESS:
         draft.props = action.props;
+        draft.categories = action.categories;
         draft.loading = false;
         break;
 

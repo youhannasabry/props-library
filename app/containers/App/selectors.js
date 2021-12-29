@@ -23,6 +23,12 @@ const makeSelectProps = () =>
     globalState => globalState.props,
   );
 
+const makeSelectCategories = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.categories,
+  );
+
 const makeSelectLocation = () =>
   createSelector(
     selectRouter,
@@ -34,5 +40,6 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectProps,
+  makeSelectCategories,
   makeSelectLocation,
 };

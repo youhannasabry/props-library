@@ -22,9 +22,10 @@ import { LOAD_PROPS, LOAD_PROPS_SUCCESS, LOAD_PROPS_ERROR } from './constants';
  *
  * @return {object} An action object with a type of LOAD_PROPS
  */
-export function loadProps() {
+export function loadProps(category) {
   return {
     type: LOAD_PROPS,
+    category,
   };
 }
 
@@ -34,10 +35,11 @@ export function loadProps() {
  *
  * @return {object}      An action object with a type of LOAD_PROPS_SUCCESS passing the props
  */
-export function propsLoaded(props) {
+export function propsLoaded(data) {
   return {
     type: LOAD_PROPS_SUCCESS,
-    props,
+    props: data[0],
+    categories: data[1],
   };
 }
 
