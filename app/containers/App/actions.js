@@ -22,10 +22,11 @@ import { LOAD_PROPS, LOAD_PROPS_SUCCESS, LOAD_PROPS_ERROR } from './constants';
  *
  * @return {object} An action object with a type of LOAD_PROPS
  */
-export function loadProps(category) {
+export function loadProps(input) {
   return {
     type: LOAD_PROPS,
-    category,
+    category: input && input.category,
+    search: input && input.search,
   };
 }
 

@@ -9,10 +9,14 @@ import request from 'utils/request';
  * Props request/response handler
  */
 export function* getProps(data) {
-  const requestURL = data.category
-    ? // eslint-disable-next-line prettier/prettier
-    `https://us-central1-props-library.cloudfunctions.net/filter-props?category=${data.category}`
-    : 'https://us-central1-props-library.cloudfunctions.net/load-props';
+  // eslint-disable-next-line prettier/prettier
+  let requestURL = 'https://us-central1-props-library.cloudfunctions.net/load-props';
+  if (data && data.category)
+    // eslint-disable-next-line prettier/prettier
+    requestURL = `https://us-central1-props-library.cloudfunctions.net/filter-props?category=${data.category}`;
+  else if (data && data.search)
+    // eslint-disable-next-line prettier/prettier
+    requestURL = `https://us-central1-props-library.cloudfunctions.net/search-props?search=${data.search}`;
 
   try {
     // Call request helper (see 'utils/request')

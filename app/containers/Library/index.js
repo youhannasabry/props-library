@@ -70,7 +70,7 @@ export function Library({
               <SearchBar
                 value={search}
                 onChange={onSearchType}
-                onRequestSearch={onSearchType}
+                onRequestSearch={value => onLoadProps({ search: value })}
               />
             }
           />
@@ -82,7 +82,9 @@ export function Library({
                     categories.map(category => (
                       <MenuItem
                         key={category.category}
-                        onClick={() => onLoadProps(category.category)}
+                        onClick={() =>
+                          onLoadProps({ category: category.category })
+                        }
                       >
                         <ListItemText className="menu-item">
                           {category.category}
