@@ -79,12 +79,13 @@ Now you're ready to rumble!
 - Will be updated once ready!
 
 
-<div align="center">
-  <sub>Boilerplate created by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and maintained with ❤️ by an amazing <a href="https://github.com/orgs/react-boilerplate/people">team of developers</a>.</sub>
-</div>
-
-
 ## License
 
 This project is licensed under the MIT license, Copyright (c) 2019 Maximilian
 Stoiber. For more information see `LICENSE.md`.
+
+
+<div align="center">
+  <sub>Boilerplate created by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and maintained with ❤️ by an amazing <a href="https://github.com/orgs/react-boilerplate/people">team of developers</a>.</sub>
+</div>
+
