@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /*
  * AppConstants
  * Each action has a corresponding type, which the reducer knows and picks up on.
@@ -12,3 +13,7 @@
 export const LOAD_PROPS = 'propsLibrary/App/LOAD_PROPS';
 export const LOAD_PROPS_SUCCESS = 'propsLibrary/App/LOAD_PROPS_SUCCESS';
 export const LOAD_PROPS_ERROR = 'propsLibrary/App/LOAD_PROPS_ERROR';
+
+export const LOAD_CATEGORIES = 'propsLibrary/App/LOAD_CATEGORIES';
+export const LOAD_CATEGORIES_SUCCESS = 'propsLibrary/App/LOAD_CATEGORIES_SUCCESS';
+export const LOAD_CATEGORIES_ERROR = 'propsLibrary/App/LOAD_CATEGORIES_ERROR';

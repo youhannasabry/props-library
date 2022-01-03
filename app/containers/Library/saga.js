@@ -1,9 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { LOAD_PROPS } from 'containers/App/constants';
-import { propsLoaded, propsLoadingError } from 'containers/App/actions';
+import { LOAD_PROPS, LOAD_CATEGORIES } from 'containers/App/constants';
+import {
+  propsLoaded,
+  propsLoadingError,
+  categoriesLoaded,
+  categoriesLoadingError,
+} from 'containers/App/actions';
 
 import request from 'utils/request';
-// import { makeSelectSearch } from './selectors';
 
 /**
  * Props request/response handler
@@ -36,4 +40,20 @@ export default function* propsData() {
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
   yield takeLatest(LOAD_PROPS, getProps);
+  yield takeLatest(LOAD_CATEGORIES, getCategories);
+}
+
+/**
+ * Categories request/response handler
+ */
+export function* getCategories() {
+  const requestURL =
+    'https://us-central1-props-library.cloudfunctions.net/getCategories';
+
+  try {
+    const categories = yield call(request, requestURL);
+    yield put(categoriesLoaded(categories.data));
+  } catch (err) {
+    yield put(categoriesLoadingError(err));
+  }
 }

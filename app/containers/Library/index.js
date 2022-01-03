@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-nested-ternary */
 /**
  *
  * Library
@@ -9,6 +11,7 @@ import {
   Box,
   Card,
   CardHeader,
+  CircularProgress,
   Grid,
   ImageList,
   ImageListItem,
@@ -21,6 +24,7 @@ import {
   Typography,
   Tooltip,
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import SearchBar from 'material-ui-search-bar';
@@ -37,7 +41,7 @@ import {
   makeSelectLoading,
   makeSelectError,
 } from 'containers/App/selectors';
-import { loadProps } from '../App/actions';
+import { loadProps, loadCategories } from '../App/actions';
 
 import { makeSelectSearch } from './selectors';
 import reducer from './reducer';
@@ -50,13 +54,17 @@ export function Library({
   props,
   categories,
   onLoadProps,
+  onLoadCategories,
   onSearchType,
+  loading,
+  error,
 }) {
   useInjectReducer({ key: 'library', reducer });
   useInjectSaga({ key: 'library', saga });
 
   useEffect(() => {
     onLoadProps();
+    onLoadCategories();
   }, []);
 
   return (
@@ -109,34 +117,53 @@ export function Library({
                 justifyContent="space-evenly"
                 alignItems="center"
               >
-                <ImageList cols={3} rowHeight={200}>
-                  {props &&
-                    // eslint-disable-next-line react/prop-types
-                    props.map(prop => (
-                      <ImageListItem key={prop.id}>
-                        <img
-                          src="https://picsum.photos/500"
-                          // eslint-disable-next-line react/prop-types
-                          alt={props.new_name}
-                        />
-                        <ImageListItemBar
-                          title={prop.new_name}
-                          subtitle={prop.category}
-                          actionIcon={
-                            <Tooltip title={prop.new_name}>
-                              <IconButton
-                                style={{ color: 'white' }}
-                                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                aria-label={`info about ${prop.new_name}`}
-                              >
-                                <InfoIcon />
-                              </IconButton>
-                            </Tooltip>
-                          }
-                        />
-                      </ImageListItem>
-                    ))}
-                </ImageList>
+                {loading ? (
+                  <CircularProgress
+                    style={{ color: 'white', marginTop: '25%' }}
+                  />
+                ) : error ? (
+                  <Alert severity="error">
+                    Google Cloud Function rejected the request!
+                    <br /> Too many requests were sent to the function in a
+                    short timeframe.
+                    <br /> Try and reload the page or applying the filter/search
+                    again.
+                  </Alert>
+                ) : props && props.length === 0 ? (
+                  <Alert severity="error">
+                    No props were found! <br /> Please try a different search
+                    query!
+                  </Alert>
+                ) : (
+                  <ImageList cols={3} rowHeight={200}>
+                    {props &&
+                      // eslint-disable-next-line react/prop-types
+                      props.map(prop => (
+                        <ImageListItem key={prop.id}>
+                          <img
+                            src="https://picsum.photos/500"
+                            // eslint-disable-next-line react/prop-types
+                            alt={props.new_name}
+                          />
+                          <ImageListItemBar
+                            title={prop.new_name}
+                            subtitle={prop.category}
+                            actionIcon={
+                              <Tooltip title={prop.new_name}>
+                                <IconButton
+                                  style={{ color: 'white' }}
+                                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                  aria-label={`info about ${prop.new_name}`}
+                                >
+                                  <InfoIcon />
+                                </IconButton>
+                              </Tooltip>
+                            }
+                          />
+                        </ImageListItem>
+                      ))}
+                  </ImageList>
+                )}
               </Grid>
             </Box>
           </Box>
@@ -149,9 +176,12 @@ export function Library({
 Library.propTypes = {
   search: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   props: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  categories: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  categories: PropTypes.any,
   onLoadProps: PropTypes.func,
+  onLoadCategories: PropTypes.func,
   onSearchType: PropTypes.func,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -169,6 +199,7 @@ function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadProps(evt));
     },
+    onLoadCategories: () => dispatch(loadCategories()),
     dispatch,
   };
 }

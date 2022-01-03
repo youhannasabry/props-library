@@ -8,7 +8,14 @@
  */
 
 import produce from 'immer';
-import { LOAD_PROPS_SUCCESS, LOAD_PROPS, LOAD_PROPS_ERROR } from './constants';
+import {
+  LOAD_PROPS_SUCCESS,
+  LOAD_PROPS,
+  LOAD_PROPS_ERROR,
+  LOAD_CATEGORIES_SUCCESS,
+  LOAD_CATEGORIES,
+  LOAD_CATEGORIES_ERROR,
+} from './constants';
 
 // The initial state of the App
 export const initialState = {
@@ -26,16 +33,30 @@ const appReducer = (state = initialState, action) =>
         draft.loading = true;
         draft.error = false;
         draft.props = false;
-        draft.categories = false;
         break;
 
       case LOAD_PROPS_SUCCESS:
         draft.props = action.props;
-        draft.categories = action.categories;
         draft.loading = false;
         break;
 
       case LOAD_PROPS_ERROR:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+
+      case LOAD_CATEGORIES:
+        draft.loading = true;
+        draft.error = false;
+        draft.categories = false;
+        break;
+
+      case LOAD_CATEGORIES_SUCCESS:
+        draft.categories = action.categories;
+        draft.loading = false;
+        break;
+
+      case LOAD_CATEGORIES_ERROR:
         draft.error = action.error;
         draft.loading = false;
         break;
