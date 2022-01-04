@@ -16,17 +16,14 @@ import {
   ImageList,
   ImageListItem,
   ImageListItemBar,
-  IconButton,
   ListItemText,
   MenuList,
   MenuItem,
   Paper,
   Typography,
-  Tooltip,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import ArrowRight from '@material-ui/icons/ArrowRight';
-import InfoIcon from '@material-ui/icons/InfoOutlined';
 import SearchBar from 'material-ui-search-bar';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -135,7 +132,10 @@ export function Library({
                     query!
                   </Alert>
                 ) : (
-                  <ImageList cols={3} rowHeight={200}>
+                  <ImageList
+                    cols={props && props.length > 3 ? 3 : props.length}
+                    rowHeight={200}
+                  >
                     {props &&
                       // eslint-disable-next-line react/prop-types
                       props.map(prop => (
@@ -148,17 +148,6 @@ export function Library({
                           <ImageListItemBar
                             title={prop.new_name}
                             subtitle={prop.category}
-                            actionIcon={
-                              <Tooltip title={prop.new_name}>
-                                <IconButton
-                                  style={{ color: 'white' }}
-                                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                  aria-label={`info about ${prop.new_name}`}
-                                >
-                                  <InfoIcon />
-                                </IconButton>
-                              </Tooltip>
-                            }
                           />
                         </ImageListItem>
                       ))}

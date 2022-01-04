@@ -15,7 +15,7 @@ import request from 'utils/request';
 export function* getProps(data) {
   // eslint-disable-next-line prettier/prettier
   let requestURL = 'https://us-central1-props-library.cloudfunctions.net/load-props';
-  if (data && data.category)
+  if (data && data.category && data.category !== 'All')
     // eslint-disable-next-line prettier/prettier
     requestURL = `https://us-central1-props-library.cloudfunctions.net/filter-props?category=${data.category}`;
   else if (data && data.search)

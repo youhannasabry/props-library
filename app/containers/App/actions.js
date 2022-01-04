@@ -82,6 +82,7 @@ export function loadCategories() {
  * @return {object}      An action object with a type of LOAD_CATEGORIES_SUCCESS passing the categories
  */
 export function categoriesLoaded(data) {
+  data.splice(0, 0, { category: 'All' });
   return {
     type: LOAD_CATEGORIES_SUCCESS,
     categories: data,
